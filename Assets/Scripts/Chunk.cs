@@ -20,7 +20,6 @@ public class Chunk : MonoBehaviour
     public static readonly int Height = 256;
 
     private World world;
-    private BlockData blockData;
 
     private ChunkPos m_Position;
     public ChunkPos Position
@@ -52,7 +51,6 @@ public class Chunk : MonoBehaviour
 
     void Awake()
     {
-        blockData = GameObject.Find("World").GetComponent<BlockData>();
         MeshRenderer.material.mainTexture = TextureManager.BlockAtlas;
     }
 
@@ -344,31 +342,19 @@ public class Chunk : MonoBehaviour
     }
 
     // 視界をさえぎるブロックかどうか判定
-    bool CheckTransparent(Vector3 pos)
+    bool CheckTransparent(Vector3 pos, Block.Faces face)
     {
-        int x = Mathf.FloorToInt(pos.x);
-        int y = Mathf.FloorToInt(pos.y);
-        int z = Mathf.FloorToInt(pos.z);
-
-        if (x < 0 || x > Width - 1 || y < 0 || y > Height - 1 || z < 0 || z > Width - 1)
+        int id = CheckBlockID(pos);
+        if (id == 0)
         {
-            return false;
+            return true;
         }
-
-        return blockData.Blocks[m_BlockMap[x, y, z]].isTransparent;
-    }
-
-    bool CheckSolid(Vector3 pos)
-    {
-        int x = Mathf.FloorToInt(pos.x);
-        int y = Mathf.FloorToInt(pos.y);
-        int z = Mathf.FloorToInt(pos.z);
-
-        if (x < 0 || x > Width - 1 || y < 0 || y > Height - 1 || z < 0 || z > Width - 1)
+        // チャンク境界
+        if (id < 0)
         {
-            return false;
+            return true;
         }
-        return blockData.Blocks[m_BlockMap[x, y, z]].isSolid;
+        return BlockManager.GetBlock(id).IsTransparent(face);
     }
 
     int CheckBlockID(Vector3 pos)
@@ -445,16 +431,16 @@ public class Chunk : MonoBehaviour
         for (int face = 0; face < 6; face++)
         {
             // その面が不透過の個体だった場合
-            if (CheckSolid(pos + BlockRenderingData.faceChecks[face]) && !CheckTransparent(pos + BlockRenderingData.faceChecks[face]))
+            if (!CheckTransparent(pos + BlockRenderingData.faceChecks[face], (Block.Faces)face))
+            {
+                continue;
+            }
+            if (CheckTransparent(pos, (Block.Faces)face) && CheckBlockID(pos) == CheckBlockID(pos + BlockRenderingData.faceChecks[face]))
             {
                 continue;
             }
 
-            if (CheckTransparent(pos) && CheckBlockID(pos) == CheckBlockID(pos + BlockRenderingData.faceChecks[face]))
-            {
-                continue;
-            }
-            var t = b.GetTexture((BlockNew.Faces)face);
+            var t = b.GetTexture((Block.Faces)face);
             if (t == null)
             {
                 continue;
@@ -478,53 +464,6 @@ public class Chunk : MonoBehaviour
         }
 
         return;
-
-        for (int p = 0; p < 6; p++)
-        {
-
-            if (/*!CheckBlockView(pos + BlockRenderingData.faceChecks[p])*/true)
-            {
-                int blockID = CheckBlockID(pos);
-                if (blockID <= 0)
-                {
-                    continue;
-                }
-
-                // その面が不透過の個体だった場合
-                if (CheckSolid(pos + BlockRenderingData.faceChecks[p]) && !CheckTransparent(pos + BlockRenderingData.faceChecks[p]))
-                {
-                    continue;
-                }
-
-                if (CheckTransparent(pos) && CheckBlockID(pos) == CheckBlockID(pos + BlockRenderingData.faceChecks[p]))
-                {
-                    continue;
-                }
-
-                //int blockID = BlockMap[(int)pos.x, (int)pos.y, (int)pos.z];
-                //if (blockID == 0)
-                //{
-                //    continue;
-                //}
-
-                chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[p, 0]]);
-                chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[p, 1]]);
-                chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[p, 2]]);
-                chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[p, 3]]);
-
-                AddTexture(chunkMeshData, blockData.Blocks[blockID].GetTextureID((Block.EnumFace)p));
-                chunkMeshData.triangles.Add(chunkMeshData.vertexIndex);
-                chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 1);
-                chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 2);
-                chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 2);
-                chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 1);
-                chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 3);
-
-                chunkMeshData.vertexIndex += 4;
-
-            }
-        }
-
     }
 
     void AddTexture(ChunkMeshData chunkMeshData, int textureID)

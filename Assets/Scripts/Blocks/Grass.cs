@@ -1,4 +1,4 @@
-public class Grass : BlockNew
+public class Grass : Block
 {
     public static readonly string NAME = "grass";
     public Grass() : base(NAME)

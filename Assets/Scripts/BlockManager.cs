@@ -5,7 +5,7 @@ using UnityEngine;
 
 public static class BlockManager
 {
-    private static readonly List<BlockNew> RegisteredBlocks = new();
+    private static readonly List<Block> RegisteredBlocks = new();
     private static readonly Dictionary<string, int> RegisteredBlockNameMap = new();
 
     public static void ResistAllBlock()
@@ -20,12 +20,12 @@ public static class BlockManager
         ResisterBlock(Beacon.NAME, new Beacon());
     }
 
-    public static BlockNew GetBlock(int id)
+    public static Block GetBlock(int id)
     {
         return RegisteredBlocks[id];
     }
 
-    public static BlockNew GetBlock(string name)
+    public static Block GetBlock(string name)
     {
         return RegisteredBlocks[GetBlockId(name)];
     }
@@ -40,7 +40,7 @@ public static class BlockManager
         return RegisteredBlockNameMap[name];
     }
 
-    private static void ResisterBlock(string name, BlockNew block)
+    private static void ResisterBlock(string name, Block block)
     {
         int id = RegisteredBlocks.Count;
         RegisteredBlocks.Add(block);

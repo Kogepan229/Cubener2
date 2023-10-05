@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class Bedrock : BlockNew
+public class Bedrock : Block
 {
     public static readonly string NAME = "bedrock";
     public Bedrock() : base(NAME)

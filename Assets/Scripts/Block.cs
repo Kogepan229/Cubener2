@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.RenderGraphModule;
 
-public abstract class BlockNew
+public abstract class Block
 {
     public enum Faces
     {
@@ -19,7 +19,7 @@ public abstract class BlockNew
     public string Name { get; }
     protected readonly string[] Textures = new string[6];
 
-    protected BlockNew(string name)
+    protected Block(string name)
     {
         Name = name;
     }
@@ -47,5 +47,10 @@ public abstract class BlockNew
     public string GetTexture( Faces face )
     {
         return this.Textures[(int)face];
+    }
+
+    public virtual bool IsTransparent( Faces face )
+    {
+        return false;
     }
 }

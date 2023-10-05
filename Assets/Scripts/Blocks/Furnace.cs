@@ -1,4 +1,4 @@
-public class Furnace : BlockNew
+public class Furnace : Block
 {
     public static readonly string NAME = "furnace";
     public Furnace() : base(NAME)

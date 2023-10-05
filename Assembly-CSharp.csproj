@@ -77,7 +77,6 @@
     <Compile Include="Assets\Scripts\Info.cs" />
     <Compile Include="Assets\Scripts\TextureManager.cs" />
     <Compile Include="Assets\Scripts\Blocks\Stone.cs" />
-    <Compile Include="Assets\Scripts\BlockData.cs" />
     <Compile Include="Assets\Scripts\Blocks\Furnace.cs" />
     <Compile Include="Assets\Scripts\Blocks\Grass.cs" />
   </ItemGroup>
