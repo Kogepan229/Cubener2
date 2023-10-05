@@ -14,7 +14,6 @@ public class Chunk : MonoBehaviour
     public MeshRenderer MeshRenderer;
     public MeshFilter MeshFilter;
     public MeshCollider MeshCollider;
-    //private GameObject collidersObj;
 
     public static readonly int Width = 16;
     public static readonly int Height = 256;
@@ -30,7 +29,6 @@ public class Chunk : MonoBehaviour
         }
         set
         {
-            //Debug.Log(value.ToString());
             m_Position = value;
             transform.position = new Vector3(value.x * 16, value.y * 16, value.z * 16);
         }
@@ -56,16 +54,6 @@ public class Chunk : MonoBehaviour
 
     void Start()
     {
-        /*
-        var sw = new System.Diagnostics.Stopwatch();     // ストップウォッチオブジェクト生成
-        sw.Start();  //  時間計測スタート
-        //UpdateMesh();
-        UpdateMeshAsync();
-        sw.Stop();   // 時間計測終了
-        TimeSpan span = sw.Elapsed;    //  計測した時間を span に代入
-        Debug.Log("time: " + span.TotalMilliseconds.ToString());
-        */
-        //m_MeshUpdateFlag = true;
         StartCoroutine(CoCreateChunckMesh());
     }
 
@@ -78,9 +66,7 @@ public class Chunk : MonoBehaviour
             m_MeshUpdateFlag = false;
             m_MeshUpdatingFlag = true;
             StartCoroutine(CoCreateChunckMesh());
-            //Debug.Log("fin");
             m_MeshUpdatingFlag = false;
-            //UpdateMeshAsync();
             sw.Stop();   // 時間計測終了
             TimeSpan span = sw.Elapsed;    //  計測した時間を span に代入
             //Debug.Log("time: " + span.TotalMilliseconds.ToString());
@@ -90,49 +76,11 @@ public class Chunk : MonoBehaviour
     public static GameObject CreateChunkObject(ChunkPos pos, World world)
     {
         GameObject chunkObj = Instantiate(Resources.Load<GameObject>("Prefabs/ChunkPrefab"));
-        ///GameObject chunkObj = Instantiate(chunkPrefab);
-        //GameObject chunkObj = new GameObject("[" + pos.x + ", " + pos.y + ", " + pos.z + "]");
         chunkObj.name = "[" + pos.x + ", " + pos.y + ", " + pos.z + "]";
         Chunk chunk = chunkObj.GetComponent<Chunk>();
         chunk.world = world;
         chunk.Position = pos;
-        //chunk.ChunkTerrainGeneration();
-        //chunk.position = pos;
         return chunkObj;
-    }
-
-    public async void GenerateChunkTerrain()
-    {
-        await Task.Run(() =>
-        {
-            FastNoiseLite noise = new FastNoiseLite();
-            noise.SetSeed(10);
-            noise.SetFrequency(0.03f);
-
-            noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
-
-            for (int x = 0; x < Width; x++)
-            {
-                for (int z = 0; z < Width; z++)
-                {
-                    int _x = x + Position.x * Width;
-                    int _z = z + Position.z * Width;
-                    int _height = (int)(noise.GetNoise(_x, _z) * 100f / 8) + 50;
-                    //Debug.Log(noise.GetNoise(_x, _z));
-                    //int _height = (int)(Mathf.PerlinNoise(_x * _scale, _z * _scale) * 10f) + 30;
-                    //Debug.Log(Mathf.PerlinNoise(_x * _scale, _z * _scale));
-                    //Debug.Log(x * 0.01 + ", " + z * 0.01f);
-                    //Debug.Log((int)(noise.GetNoise(x * 0.1f, z * 0.1f) * 1000f));
-                    for (int y = 0; y < _height; y++)
-                    {
-                        PutBlock(4, new Vector3Int(x, y, z));
-                    }
-                }
-            }
-
-
-        });
-        this.enabled = true;
     }
 
     public void GenerateChunkTerrainNew()
@@ -169,40 +117,6 @@ public class Chunk : MonoBehaviour
             }
         }
     }
-
-    /*
-    void ChunkTerrainGeneration()
-    {
-        //Debug.Log("pos: " + Position.ToString());
-        FastNoiseLite noise = new FastNoiseLite();
-        noise.SetSeed(10);
-        noise.SetFrequency(0.03f);
-
-        //noise.Set
-        noise.SetNoiseType(FastNoiseLite.NoiseType.Perlin);
-
-        for (int x = 0; x < Width; x++)
-        {
-            for (int z = 0; z < Width; z++)
-            {
-                int _x = x + Position.x * Width;
-                int _z = z + Position.z * Width;
-                int _height = (int)(noise.GetNoise(_x, _z) * 100f / 8) + 50;
-                //Debug.Log(noise.GetNoise(_x, _z));
-                //int _height = (int)(Mathf.PerlinNoise(_x * _scale, _z * _scale) * 10f) + 30;
-                //Debug.Log(Mathf.PerlinNoise(_x * _scale, _z * _scale));
-                //Debug.Log(x * 0.01 + ", " + z * 0.01f);
-                //Debug.Log((int)(noise.GetNoise(x * 0.1f, z * 0.1f) * 1000f));
-                for (int y = 0; y < _height; y++)
-                {
-                    PutBlock(4, new Vector3Int(x, y, z));
-                }
-            }
-        }
-
-        this.enabled = true;
-    }
-    */
 
     void PopulateVoxelMap()
     {
@@ -312,27 +226,6 @@ public class Chunk : MonoBehaviour
         Vector3Int _pos = getPosInChunk(pos);
         Debug.Log("Chunk: " + Position.ToString() + " InChunk: " + _pos.ToString());
         m_BlockMap[_pos.x, _pos.y, _pos.z] = blockID;
-        /*
-        try
-        {
-            if (blockData.Blocks[blockID].isSolid && m_BlockColliderMap[_pos.x, _pos.y, _pos.z] == null)
-            {
-                //Debug.Log("collider");
-                GameObject obj = Instantiate(blockColliderPrefab, collidersObj.transform);
-                obj.transform.localPosition = _pos;
-                m_BlockColliderMap[_pos.x, _pos.y, _pos.z] = obj;
-            }
-            else if (blockData.Blocks[blockID].isSolid == false)
-            {
-                Destroy(m_BlockColliderMap[_pos.x, _pos.y, _pos.z]);
-            }
-        }catch (Exception e)
-        {
-            Debug.LogException(e);
-            Debug.Log(_pos.ToString());
-        }
-        */
-
         m_MeshUpdateFlag = true;
     }
     public void PutBlock(int blockID, Vector3Int posInChunk)
@@ -368,31 +261,6 @@ public class Chunk : MonoBehaviour
         }
         return m_BlockMap[x, y, z];
     }
-
-    //void UpdateMesh()
-    //{
-    //    //Debug.Log("Mesh Update");
-
-
-    //    CreateMeshData();
-    //    var sw = new System.Diagnostics.Stopwatch();     // ストップウォッチオブジェクト生成
-    //    sw.Start();  //  時間計測スタート
-    //    CreateMesh();
-    //    sw.Stop();   // 時間計測終了
-    //    TimeSpan span = sw.Elapsed;    //  計測した時間を span に代入
-    //    //Debug.Log("time: " + span.TotalMilliseconds.ToString());
-
-    //    m_MeshUpdateFlag = false;
-    //}
-
-    //async void UpdateMeshAsync()
-    //{
-    //    m_MeshUpdateFlag = false;
-    //    m_MeshUpdatingFlag = true;
-    //    await Task.Run(CreateMeshData);
-    //    CreateMesh();
-    //    m_MeshUpdatingFlag = false;
-    //}
 
     class ChunkMeshData
     {
@@ -482,20 +350,6 @@ public class Chunk : MonoBehaviour
         chunkMeshData.uvs.Add(new Vector2(x + BlockRenderingData.NormalizedBlockTextureSize, y + BlockRenderingData.NormalizedBlockTextureSize));
     }
 
-    //void CreateMesh()
-    //{
-    //    m_Mesh = new Mesh
-    //    {
-    //        vertices = vertices.ToArray(),
-    //        triangles = triangles.ToArray(),
-    //        uv = uvs.ToArray()
-    //    };
-
-    //    m_Mesh.RecalculateNormals();
-
-    //    world.ChunkGenerateMeshColliderQueue.Enqueue((this, m_Mesh));
-    //}
-
     private void OnDestroy()
     {
         Destroy(m_Mesh);
@@ -503,15 +357,6 @@ public class Chunk : MonoBehaviour
 
     IEnumerator CoCreateChunckMesh()
     {
-        //// 地形生成
-        //var task = Task.Run(() => GenerateChunkTerrainNew());
-        //while (!task.IsCompleted)
-        //{
-        //    yield return null;
-        //}
-        //task.Wait();
-
-
         var createMeshDatatask = Task.Run(() => CreateMeshData());
         while (!createMeshDatatask.IsCompleted)
         {

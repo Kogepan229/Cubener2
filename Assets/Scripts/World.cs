@@ -64,12 +64,6 @@ public class World : MonoBehaviour
     void Update()
     {
         deleteChunksInQueue();
-        //if (ChunkGenerateMeshColliderQueue.Count > 0)
-        //{
-        //    (Chunk, Mesh) item = ChunkGenerateMeshColliderQueue.Dequeue();
-        //    item.Item1.MeshCollider.sharedMesh = item.Item2;
-        //    item.Item1.MeshFilter.sharedMesh = item.Item2;
-        //}
 
         // プレイヤーがいるチャンクが変わったときに生成と削除をする
         if (beforeFramePlayerChunkPos != player.GetChunkPos())
@@ -78,9 +72,6 @@ public class World : MonoBehaviour
             GenerateChunks();
             UnloadOutOfRangeChunks();
         }
-
-        // チャンクの地形生成キューを消化
-        //generateChunksInQueue();
     }
 
     void LateUpdate()
@@ -149,39 +140,6 @@ public class World : MonoBehaviour
             }
         }
     }
-
-    //private void AddChunkGenerationQueue(ChunkPos pos)
-    //{
-    //    if (chunkMap[pos.y].ContainsKey(ChunkPos.AsLong(pos.x, pos.z)) == false && chunkGenerationQueue.Contains(pos) == false)
-    //    {
-    //        chunkGenerationQueue.Add(pos);
-    //    }
-    //}
-
-    //private void generateChunksInQueue()
-    //{
-    //    List<ChunkPos> generatedChunks = new List<ChunkPos>();
-
-    //    // チャンクの地形生成のキューを消化
-    //    foreach (ChunkPos chunkPos in chunkGenerationQueue)
-    //    {
-    //        generateChunk(chunkPos);
-    //        generatedChunks.Add(chunkPos);
-    //    }
-
-    //    foreach (ChunkPos chunkPos in generatedChunks)
-    //    {
-    //        chunkGenerationQueue.Remove(chunkPos);
-    //    }
-    //}
-
-    //private void generateChunk(ChunkPos chunkPos)
-    //{
-    //    GameObject chunkObj = Chunk.CreateChunkObject(chunkPos, this);
-    //    Chunk chunk = chunkObj.GetComponent<Chunk>();
-    //    AddChunkToWorld(chunk);
-    //    chunk.GenerateChunkTerrain();
-    //}
 
     public void AddChunkToWorld(Chunk chunk)
     {
