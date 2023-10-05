@@ -331,7 +331,7 @@ public class Player : MonoBehaviour
     {
         if (inputMouse0 == 1)
         {
-            if (m_MiningInvervalCount == 0 || m_MiningInvervalCount > MiningInterval)
+            if (m_ExistLookingBlock && (m_MiningInvervalCount == 0 || m_MiningInvervalCount > MiningInterval))
             {
                 Debug.Log("put: " + getPosLookingAt().ToString());
                 world.PutBlock(0, getPosLookingAt());
