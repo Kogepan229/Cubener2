@@ -81,7 +81,7 @@ public class World : MonoBehaviour
 
     IEnumerator CoCreateChunck(ChunkPos chunkPos)
     {
-        if (chunkMap[chunkPos.y].ContainsKey(ChunkPos.AsLong(chunkPos.x, chunkPos.z)))
+        if (chunkMap[chunkPos.y].ContainsKey(chunkPos.AsLong()))
         {
             yield break;
         }

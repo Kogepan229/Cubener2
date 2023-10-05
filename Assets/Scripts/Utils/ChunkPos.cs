@@ -23,9 +23,20 @@ public struct ChunkPos
         z = Mathf.FloorToInt(pos.z / (float)Chunk.Width);
     }
 
+    /// <summary>
+    /// Return x and z as long type
+    /// </summary>
     public static long AsLong(int x, int z)
     {
         return (long)x & 4294967295L | ((long)z & 4294967295L) << 32;
+    }
+
+    /// <summary>
+    /// Return x and z as long type
+    /// </summary>
+    public readonly long AsLong()
+    {
+        return AsLong(x, z);
     }
 
 
@@ -48,10 +59,24 @@ public struct ChunkPos
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(ChunkPos lhs, ChunkPos rhs)
     {
-        return !(lhs == rhs);
+        return lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z;
     }
 
-    public override string ToString()
+    public override readonly bool Equals(object obj)
+    {
+        if (obj == null || this.GetType() != obj.GetType())
+        {
+            return false;
+        }
+        return this == (ChunkPos)obj;
+    }
+
+    public override readonly int GetHashCode()
+    {
+        return System.HashCode.Combine(x, y, z);
+    }
+
+    public override readonly string ToString()
     {
         return x.ToString() + " / " + y.ToString() + " / " + z.ToString();
     }

@@ -39,10 +39,24 @@ public struct BlockPos
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static bool operator !=(BlockPos lhs, BlockPos rhs)
     {
-        return !(lhs == rhs);
+        return lhs.x != rhs.x || lhs.y != rhs.y || lhs.z != rhs.z;
     }
 
-    public override string ToString()
+    public override readonly bool Equals(object obj)
+    {
+        if (obj == null || this.GetType() != obj.GetType())
+        {
+            return false;
+        }
+        return this == (BlockPos)obj;
+    }
+
+    public override readonly int GetHashCode()
+    {
+        return System.HashCode.Combine(x, y, z);
+    }
+
+    public override readonly string ToString()
     {
         return x.ToString() + " / " + y.ToString() + " / " + z.ToString();
     }
