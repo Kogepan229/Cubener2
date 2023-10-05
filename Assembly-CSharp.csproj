@@ -58,17 +58,28 @@
     <Analyzer Include="D:\Unity\2022.3.10f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\Blocks\Beacon.cs" />
     <Compile Include="Assets\Scripts\Utils\BlockPos.cs" />
+    <Compile Include="Assets\Scripts\Block.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Glass.cs" />
     <Compile Include="Assets\Scripts\World.cs" />
     <Compile Include="Assets\Scripts\BakeMeshJob.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Dirt.cs" />
+    <Compile Include="Assets\Scripts\BlockManager.cs" />
     <Compile Include="Assets\Scripts\Chunk.cs" />
     <Compile Include="Assets\TutorialInfo\Scripts\Readme.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Bedrock.cs" />
     <Compile Include="Assets\Scripts\Libraries\FastNoiseLite.cs" />
     <Compile Include="Assets\Scripts\BlockRenderingData.cs" />
     <Compile Include="Assets\Scripts\Utils\ChunkPos.cs" />
     <Compile Include="Assets\Scripts\Player.cs" />
+    <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Info.cs" />
+    <Compile Include="Assets\Scripts\TextureManager.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Stone.cs" />
     <Compile Include="Assets\Scripts\BlockData.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Furnace.cs" />
+    <Compile Include="Assets\Scripts\Blocks\Grass.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

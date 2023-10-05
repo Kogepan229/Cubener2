@@ -53,6 +53,7 @@ public class Chunk : MonoBehaviour
     void Awake()
     {
         blockData = GameObject.Find("World").GetComponent<BlockData>();
+        MeshRenderer.material.mainTexture = TextureManager.BlockAtlas;
     }
 
     void Start()
@@ -158,7 +159,14 @@ public class Chunk : MonoBehaviour
                 //Debug.Log((int)(noise.GetNoise(x * 0.1f, z * 0.1f) * 1000f));
                 for (int y = 0; y < _height; y++)
                 {
-                    PutBlock(4, new Vector3Int(x, y, z));
+                    if (y == _height - 1)
+                    {
+                        PutBlock(BlockManager.GetBlockId(Grass.NAME), new Vector3Int(x, y, z));
+                    }
+                    else
+                    {
+                        PutBlock(BlockManager.GetBlockId(Dirt.NAME), new Vector3Int(x, y, z));
+                    }
                 }
             }
         }
@@ -219,7 +227,7 @@ public class Chunk : MonoBehaviour
             {
                 for (int z = 0; z < Width; z++)
                 {
-                    PutBlock(6, new BlockPos(x, y, z));
+                    PutBlock(BlockManager.GetBlockId(Glass.NAME), new BlockPos(x, y, z));
                     //m_BlockMap[x, y, z] = 6;
                 }
             }
@@ -429,6 +437,48 @@ public class Chunk : MonoBehaviour
 
     void AddBlockRenderingDataToChunk(ChunkMeshData chunkMeshData, Vector3 pos)
     {
+        if (CheckBlockID(pos) <= 0)
+        {
+            return;
+        }
+        var b = BlockManager.GetBlock(CheckBlockID(pos));
+        for (int face = 0; face < 6; face++)
+        {
+            // ‚»‚Ì–Ê‚ª•s“§‰ß‚ÌŒÂ‘Ì‚¾‚Á‚½ê‡
+            if (CheckSolid(pos + BlockRenderingData.faceChecks[face]) && !CheckTransparent(pos + BlockRenderingData.faceChecks[face]))
+            {
+                continue;
+            }
+
+            if (CheckTransparent(pos) && CheckBlockID(pos) == CheckBlockID(pos + BlockRenderingData.faceChecks[face]))
+            {
+                continue;
+            }
+            var t = b.GetTexture((BlockNew.Faces)face);
+            if (t == null)
+            {
+                continue;
+            }
+            var uv = TextureManager.GetTextureUV(t);
+            chunkMeshData.uvs.Add(new Vector2(uv.x, uv.y));
+            chunkMeshData.uvs.Add(new Vector2(uv.x, uv.y + uv.height));
+            chunkMeshData.uvs.Add(new Vector2(uv.x + uv.width, uv.y));
+            chunkMeshData.uvs.Add(new Vector2(uv.x + uv.width, uv.y + uv.height));
+            chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 0]]);
+            chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 1]]);
+            chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 2]]);
+            chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 3]]);
+            chunkMeshData.triangles.Add(chunkMeshData.vertexIndex);
+            chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 1);
+            chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 2);
+            chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 2);
+            chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 1);
+            chunkMeshData.triangles.Add(chunkMeshData.vertexIndex + 3);
+            chunkMeshData.vertexIndex += 4;
+        }
+
+        return;
+
         for (int p = 0; p < 6; p++)
         {
 
