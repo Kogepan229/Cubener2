@@ -155,7 +155,9 @@ public class World : MonoBehaviour
             {
                 ChunkPos tmp = item.Value.Position - player.GetChunkPos();
                 int distance = Mathf.Max(Mathf.Abs(tmp.x), Mathf.Abs(tmp.z));
-                if (distance > ChunkLoadDistance)
+                // チャンクのロード距離から2チャンク離れたら削除
+                // チャンクの境界を往復したときに削除と生成が繰り返されないようにするため
+                if (distance > ChunkLoadDistance + 2)
                 {
                     chunkDeleteQueue.Enqueue(item.Value);
                 }
