@@ -5,4 +5,9 @@ public class Glass : Block
     {
         SetTextureAll(NAME);
     }
+
+    public override bool IsTransparent(Faces face)
+    {
+        return true;
+    }
 }
