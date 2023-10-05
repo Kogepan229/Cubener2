@@ -101,14 +101,14 @@ public class Player : MonoBehaviour
 
         if (m_ExistLookingBlock)
         {
-            Info.InfoData["Look At"] = m_Hit.point.x.ToString() + " / " + m_Hit.point.y.ToString() + " / " + m_Hit.point.z.ToString() + " (" + getPosLookingAt().ToString() + ")";
-            Info.InfoData["Front Look At"] = getFrontPosLookingAt().ToString();
+            Info.UpdateInfo("Look At", m_Hit.point.x.ToString() + " / " + m_Hit.point.y.ToString() + " / " + m_Hit.point.z.ToString() + " (" + getPosLookingAt().ToString() + ")");
+            Info.UpdateInfo("Front Look At", getFrontPosLookingAt().ToString());
             m_LookingAtChunkPos = getPosLookingAt();
         }
         else
         {
-            Info.InfoData["Look At"] = "None";
-            Info.InfoData["Front Look At"] = "None";
+            Info.UpdateInfo("Look At", "None");
+            Info.UpdateInfo("Front Look At", "None");
             m_LookingAtChunkPos = null;
         }
 
@@ -117,10 +117,10 @@ public class Player : MonoBehaviour
         MiningProc();
 
         // INFO
-        Info.InfoData["X, Y, Z"] = transform.position.x.ToString() + " / " + transform.position.y.ToString() + " / " + transform.position.z.ToString();
-        Info.InfoData["Rotation"] = cameraTransform.localEulerAngles.x.ToString() + " / " + viewAngleTransform.localEulerAngles.y.ToString() + " / " + cameraTransform.localEulerAngles.z.ToString();
-        Info.InfoData["Direction"] = getPlayerLookingDirectionHorizontal().ToString();
-        Info.InfoData["Chunk"] = new ChunkPos(new BlockPos(transform.position)).ToString();
+        Info.UpdateInfo("X, Y, Z", transform.position.x.ToString() + " / " + transform.position.y.ToString() + " / " + transform.position.z.ToString());
+        Info.UpdateInfo("Rotation", cameraTransform.localEulerAngles.x.ToString() + " / " + viewAngleTransform.localEulerAngles.y.ToString() + " / " + cameraTransform.localEulerAngles.z.ToString());
+        Info.UpdateInfo("Direction", getPlayerLookingDirectionHorizontal().ToString());
+        Info.UpdateInfo("Chunk", new ChunkPos(new BlockPos(transform.position)).ToString());
     }
 
 

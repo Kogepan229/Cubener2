@@ -1,68 +1,71 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Info : MonoBehaviour
 {
-    static public Dictionary<string, string> InfoData = new Dictionary<string, string>();
+    [SerializeField] private TMP_FontAsset fontAsset;
 
-    private List<GameObject> infoObjs = new List<GameObject>();
+    private static readonly Dictionary<string, GameObject> InfoObjects = new();
+    static private int positionY = 0;
 
-    [SerializeField] private RectTransform rectTransform;
-    private Font font;
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        font = Resources.GetBuiltinResource(typeof(Font), "Arial.ttf") as Font;
+        var rectTransform = GetComponent<RectTransform>();
         rectTransform.sizeDelta = transform.parent.GetComponent<RectTransform>().sizeDelta;
-
-        Info.InfoData["X, Y, Z"] = "None";
-        Info.InfoData["Rotation"] = "None";
-        Info.InfoData["Look At"] = "None";
-        Info.InfoData["Direction"] = "None";
-        Info.InfoData["Front Look At"] = "None";
-        Info.InfoData["Chunk"] = "None";
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        if (InfoData.Count > infoObjs.Count)
-        {
-            for (int i = infoObjs.Count; i < InfoData.Count; i++)
-            {
-                GameObject obj = new GameObject();
-                obj.name = "info: " + i.ToString();
-                Text text = obj.AddComponent<Text>();
-                text.font = font;
-                text.color = Color.white;
-                text.horizontalOverflow = HorizontalWrapMode.Overflow;
-                text.text = i.ToString();
-                obj.transform.SetParent(transform);
-                RectTransform objRect = obj.GetComponent<RectTransform>();
-                objRect.anchorMin = Vector2.up;
-                objRect.anchorMax = Vector2.up;
-                objRect.pivot = Vector2.up;
-                objRect.anchoredPosition = new Vector2(2, -16 * i - 2);
-                infoObjs.Add(obj);
-            }
-        }
-        else if (InfoData.Count < infoObjs.Count)
-        {
-            for (int i = InfoData.Count; i < infoObjs.Count; i++)
-            {
-                Destroy(infoObjs[i]);
-                infoObjs.RemoveAt(i);
-            }
-        }
+        AddInfo("X, Y, Z");
+        AddInfo("Rotation");
+        AddInfo("Look At");
+        AddInfo("Direction");
+        AddInfo("Front Look At");
+        AddInfo("Chunk");
+    }
 
-        int count = 0;
-        foreach (KeyValuePair<string, string> item in InfoData)
-        {
-            infoObjs[count].GetComponent<Text>().text = item.Key + ": " + item.Value;
-            count++;
-        }
+    private void AddInfo(string key)
+    {
+        GameObject objInfo = new(key);
+        objInfo.transform.SetParent(transform);
+
+        RectTransform objRect = objInfo.AddComponent<RectTransform>();
+        objRect.anchorMin = Vector2.up;
+        objRect.anchorMax = Vector2.up;
+        objRect.pivot = Vector2.up;
+        objRect.anchoredPosition = new Vector2(2, positionY);
+        positionY -= 18;
+
+        Image image = objInfo.AddComponent<Image>();
+        image.color = new Color(0, 0, 0, 0.7f);
+
+        GameObject objText = new();
+        InfoObjects.Add(key, objText);
+
+        RectTransform objTextRect = objText.AddComponent<RectTransform>();
+        objText.transform.SetParent(objInfo.transform);
+        objTextRect.anchorMin = Vector2.up;
+        objTextRect.anchorMax = Vector2.up;
+        objTextRect.pivot = Vector2.up;
+        objTextRect.anchoredPosition = Vector2.zero;
+
+        TextMeshProUGUI text = objText.AddComponent<TextMeshProUGUI>();
+        text.font = fontAsset;
+        text.fontSize = 12;
+        text.color = Color.white;
+        text.enableWordWrapping = false;
+        text.text = key + ": " + "None";
+
+        objRect.sizeDelta = new Vector2(text.preferredWidth, text.preferredHeight);
+    }
+
+    public static void UpdateInfo(string key, string text)
+    {
+        var textMesh = InfoObjects[key].GetComponent<TextMeshProUGUI>();
+        textMesh.text = key + ": " + text;
+        InfoObjects[key].transform.parent.GetComponent<RectTransform>().sizeDelta = new Vector2(textMesh.preferredWidth, textMesh.preferredHeight);
     }
 }
