@@ -58,7 +58,7 @@ public class BlockIcon : Graphic
         var uvFront = TextureManager.GetTextureUV(textureFront);
         var uvRight = TextureManager.GetTextureUV(textureRight);
         const float prefix = 0.002f;
-        List<Vector2> uvs = new()
+        Vector2[] uvs = new Vector2[]
         {
             // Top
             new Vector2(uvTop.x + prefix, uvTop.y + uvTop.height - prefix),
@@ -79,7 +79,7 @@ public class BlockIcon : Graphic
             new Vector2(uvRight.x + uvRight.width - prefix, uvRight.y + uvRight.height - prefix),
         };
 
-        for (int i = 0; i < uvs.Count; i++)
+        for (int i = 0; i < vertices.Length; i++)
         {
             Color color;
             if (i < 4)
