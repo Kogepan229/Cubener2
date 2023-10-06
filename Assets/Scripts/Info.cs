@@ -19,12 +19,16 @@ public class Info : MonoBehaviour
 
     void Start()
     {
+        AddInfo("fps");
+        AddInfo("Chunk Loaded");
+        positionY -= 18;
+
         AddInfo("X, Y, Z");
         AddInfo("Rotation");
         AddInfo("Look At");
         AddInfo("Direction");
         AddInfo("Front Look At");
-        AddInfo("Chunk");
+        AddInfo("Chunk At");
     }
 
     private void AddInfo(string key)

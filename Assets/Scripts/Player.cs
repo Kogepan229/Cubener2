@@ -120,7 +120,7 @@ public class Player : MonoBehaviour
         Info.UpdateInfo("X, Y, Z", transform.position.x.ToString() + " / " + transform.position.y.ToString() + " / " + transform.position.z.ToString());
         Info.UpdateInfo("Rotation", cameraTransform.localEulerAngles.x.ToString() + " / " + viewAngleTransform.localEulerAngles.y.ToString() + " / " + cameraTransform.localEulerAngles.z.ToString());
         Info.UpdateInfo("Direction", getPlayerLookingDirectionHorizontal().ToString());
-        Info.UpdateInfo("Chunk", new ChunkPos(new BlockPos(transform.position)).ToString());
+        Info.UpdateInfo("Chunk At", new ChunkPos(new BlockPos(transform.position)).ToString());
     }
 
 

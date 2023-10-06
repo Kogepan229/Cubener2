@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float fps = 1f / Time.deltaTime;
+        Info.UpdateInfo("fps", fps.ToString());
     }
 }

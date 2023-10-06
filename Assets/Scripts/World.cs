@@ -64,6 +64,7 @@ public class World : MonoBehaviour
     void Update()
     {
         deleteChunksInQueue();
+        Info.UpdateInfo("Chunk Loaded", chunkMap[0].Count.ToString());
 
         // プレイヤーがいるチャンクが変わったときに生成と削除をする
         if (beforeFramePlayerChunkPos != player.GetChunkPos())
