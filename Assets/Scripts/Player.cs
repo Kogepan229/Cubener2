@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
 
         RoatateCameraProc();
 
-        MoveProc();
+        
 
         // Look At
         m_Ray.origin = cameraTransform.position;
@@ -121,6 +121,11 @@ public class Player : MonoBehaviour
         Info.UpdateInfo("Rotation", cameraTransform.localEulerAngles.x.ToString() + " / " + viewAngleTransform.localEulerAngles.y.ToString() + " / " + cameraTransform.localEulerAngles.z.ToString());
         Info.UpdateInfo("Direction", getPlayerLookingDirectionHorizontal().ToString());
         Info.UpdateInfo("Chunk At", new ChunkPos(new BlockPos(transform.position)).ToString());
+    }
+
+    void FixedUpdate()
+    {
+        MoveProc();
     }
 
 
