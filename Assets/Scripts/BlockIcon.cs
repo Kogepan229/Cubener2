@@ -86,7 +86,7 @@ public class BlockIcon : Graphic
             {
                 color = new Color(1, 1, 1, 1);
             }
-            else if ( i < 8)
+            else if (i < 8)
             {
                 color = new Color(0.8f, 0.8f, 0.8f, 1);
             }

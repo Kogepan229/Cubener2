@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
         //m_Collider.contactOffset = 5f;
 
         viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
-        if (transform.Find("ViewAngle") == null )
+        if (transform.Find("ViewAngle") == null)
         {
             Debug.Log("null1");
         }
@@ -92,7 +92,7 @@ public class Player : MonoBehaviour
 
         RoatateCameraProc();
 
-        
+
 
         // Look At
         m_Ray.origin = cameraTransform.position;

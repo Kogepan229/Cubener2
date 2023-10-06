@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class TextureManager {
+public static class TextureManager
+{
     private readonly static int ATLAS_MAX_SIZE = 128;
 
     public static Texture2D BlockAtlas { get; } = new Texture2D(ATLAS_MAX_SIZE, ATLAS_MAX_SIZE);
@@ -24,7 +25,7 @@ public static class TextureManager {
         }
 
         //var atlas = new Texture2D(ATLAS_MAX_SIZE, ATLAS_MAX_SIZE);
-        
+
         BlockAtlas.filterMode = FilterMode.Point;
         Rect[] rects = BlockAtlas.PackTextures(textures, 0, ATLAS_MAX_SIZE);
         for (int i = 0; i < rects.Length; i++)
@@ -32,7 +33,7 @@ public static class TextureManager {
             TextureUVMap.Add(textures[i].name, rects[i]);
             Debug.Log("rect: " + rects[i].ToString());
         }
-        
+
     }
 
     public static Rect GetTextureUV(string textureId)

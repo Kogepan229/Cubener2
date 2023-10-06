@@ -39,17 +39,17 @@ public abstract class Block
         this.Textures[5] = textureIdRight;
     }
 
-    protected void SetTexture( string textureId, Faces face)
+    protected void SetTexture(string textureId, Faces face)
     {
         this.Textures[(int)face] = textureId;
     }
 
-    public string GetTexture( Faces face )
+    public string GetTexture(Faces face)
     {
         return this.Textures[(int)face];
     }
 
-    public virtual bool IsTransparent( Faces face )
+    public virtual bool IsTransparent(Faces face)
     {
         return false;
     }
