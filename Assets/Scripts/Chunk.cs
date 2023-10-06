@@ -314,10 +314,11 @@ public class Chunk : MonoBehaviour
                 continue;
             }
             var uv = TextureManager.GetTextureUV(t);
-            chunkMeshData.uvs.Add(new Vector2(uv.x, uv.y));
-            chunkMeshData.uvs.Add(new Vector2(uv.x, uv.y + uv.height));
-            chunkMeshData.uvs.Add(new Vector2(uv.x + uv.width, uv.y));
-            chunkMeshData.uvs.Add(new Vector2(uv.x + uv.width, uv.y + uv.height));
+            const float prefix = 0.002f;
+            chunkMeshData.uvs.Add(new Vector2(uv.x + prefix, uv.y + prefix));
+            chunkMeshData.uvs.Add(new Vector2(uv.x + prefix, uv.y + uv.height - prefix));
+            chunkMeshData.uvs.Add(new Vector2(uv.x + uv.width - prefix, uv.y + prefix));
+            chunkMeshData.uvs.Add(new Vector2(uv.x + uv.width - prefix, uv.y + uv.height - prefix));
             chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 0]]);
             chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 1]]);
             chunkMeshData.vertices.Add(pos + BlockRenderingData.blockVerts[BlockRenderingData.voxelTris[(int)face, 2]]);
@@ -372,9 +373,9 @@ public class Chunk : MonoBehaviour
             triangles = chunkMeshData.triangles.ToArray(),
             uv = chunkMeshData.uvs.ToArray()
         };
+
         m_Mesh.RecalculateNormals();
         MeshFilter.sharedMesh = m_Mesh;
-
 
         NativeArray<int> meshIds = new NativeArray<int>(1, Allocator.Persistent);
         meshIds[0] = m_Mesh.GetInstanceID();
