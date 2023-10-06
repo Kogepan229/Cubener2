@@ -23,7 +23,6 @@ public class BlockIcon : Graphic
 
     protected override void OnPopulateMesh(VertexHelper vh)
     {
-        Debug.Log("populate");
         vh.Clear();
         Vector3 position = transform.GetComponent<RectTransform>().anchoredPosition;
         var rectTransform = transform.GetComponent<RectTransform>();
@@ -82,10 +81,23 @@ public class BlockIcon : Graphic
 
         for (int i = 0; i < uvs.Count; i++)
         {
+            Color color;
+            if (i < 4)
+            {
+                color = new Color(1, 1, 1, 1);
+            }
+            else if ( i < 8)
+            {
+                color = new Color(0.8f, 0.8f, 0.8f, 1);
+            }
+            else
+            {
+                color = new Color(0.6f, 0.6f, 0.6f, 1);
+            }
             var v = new UIVertex
             {
                 position = vertices[i],
-                color = Color.white,
+                color = color,
                 uv0 = uvs[i],
             };
             vh.AddVert(v);
