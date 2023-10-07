@@ -78,7 +78,10 @@
     <Compile Include="Assets\Scripts\TextureManager.cs" />
     <Compile Include="Assets\Scripts\Blocks\Stone.cs" />
     <Compile Include="Assets\Scripts\Blocks\Furnace.cs" />
+    <Compile Include="Assets\Scripts\ToolBar.cs" />
+    <Compile Include="Assets\Scripts\BlockIcon.cs" />
     <Compile Include="Assets\Scripts\Blocks\Grass.cs" />
+    <Compile Include="Assets\Scripts\ItemBox.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
