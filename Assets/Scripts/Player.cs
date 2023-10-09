@@ -19,8 +19,8 @@ public class Player : MonoBehaviour
     public float VerticalSpeed = 1.0f;
     public float HorizontalMouseSpeed = 1.0f;
     public float VerticalMouseSpeed = 1.0f;
-    public float MiningInterval = 0.3f;
-    public float PuttingInterval = 0.3f;
+    public float MiningInterval = 0.2f;
+    public float PuttingInterval = 0.2f;
 
     public readonly int CHUNK_LAYER = 1 << 6;
 
