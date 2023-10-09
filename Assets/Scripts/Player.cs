@@ -24,6 +24,7 @@ public class Player : MonoBehaviour
     public readonly int CHUNK_LAYER = 1 << 6;
 
     private World world;
+    private ToolBar toolBar;
 
     private Transform cameraTransform;
     private Transform viewAngleTransform;
@@ -77,6 +78,13 @@ public class Player : MonoBehaviour
         {
             Debug.Log("null2");
         }
+
+        toolBar = GameObject.Find("ToolBar").GetComponent<ToolBar>();
+        if (toolBar == null)
+        {
+            Debug.Log("toolbar null");
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
         m_IsCursorMode = false;
@@ -146,6 +154,13 @@ public class Player : MonoBehaviour
         inputMouse0 = m_Mouse.leftButton.isPressed ? 1 : 0;
         //Debug.Log(inputMouse0);
         inputMouse1 = Input.GetKeyDown(KeyCode.Mouse1) ? 1 : 0;
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        toolBar.ShiftNumberInFocus(scroll);
+        if (scroll != 0)
+        {
+            Debug.Log(scroll);
+        }
 
         //inputVertical = Input.GetAxisRaw("Vertical");
         //inputLShift = Input.GetAxisRaw("Fire3");
