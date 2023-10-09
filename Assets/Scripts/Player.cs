@@ -60,32 +60,15 @@ public class Player : MonoBehaviour
     {
         m_Mouse = Mouse.current;
         m_Keyboard = Keyboard.current;
-        //cameraTransform = GameObject.Find("Main Camera").GetComponent<Transform>();
+
         world = transform.parent.GetComponent<World>();
-        m_BlockHighlight = world.transform.Find("BlockHighlight").gameObject;
-        //m_Collider = transform.gameObject.GetComponent<BoxCollider>();
-        //m_Collider.contactOffset = 5f;
+
 
         viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
-        if (transform.Find("ViewAngle") == null)
-        {
-            Debug.Log("null1");
-        }
-        else
-        {
-            Debug.Log("found");
-        }
         cameraTransform = viewAngleTransform.Find("PlayerCamera").GetComponent<Transform>();
-        if (viewAngleTransform.Find("PlayerCamera") == null)
-        {
-            Debug.Log("null2");
-        }
 
+        m_BlockHighlight = world.transform.Find("BlockHighlight").gameObject;
         toolBar = GameObject.Find("ToolBar").GetComponent<ToolBar>();
-        if (toolBar == null)
-        {
-            Debug.Log("toolbar null");
-        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
@@ -148,7 +131,7 @@ public class Player : MonoBehaviour
         InputSystem.Update();
         mouseHorizontal = Input.GetAxis("Mouse X");
         mouseVertical = Input.GetAxis("Mouse Y");
-        //inputHorizontal = Input.GetAxisRaw("Horizontal");
+
         inputHorizontal = (m_Keyboard.dKey.isPressed ? 1 : 0) + (m_Keyboard.aKey.isPressed ? -1 : 0);
         inputVertical = (m_Keyboard.wKey.isPressed ? 1 : 0) + (m_Keyboard.sKey.isPressed ? -1 : 0);
         inputLShift = m_Keyboard.leftShiftKey.isPressed ? 1 : 0;
@@ -159,15 +142,6 @@ public class Player : MonoBehaviour
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         toolBar.ShiftNumberInFocus(scroll);
-        if (scroll != 0)
-        {
-            Debug.Log(scroll);
-        }
-
-        //inputVertical = Input.GetAxisRaw("Vertical");
-        //inputLShift = Input.GetAxisRaw("Fire3");
-        //inputSpace = Input.GetAxisRaw("Jump");
-        //inputMouse0 = Input.GetKey(KeyCode.Mouse0) ? 1 : 0;
     }
 
     private void ChangeCursorMode()
@@ -177,14 +151,12 @@ public class Player : MonoBehaviour
             if (m_IsCursorMode)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                //Cursor.visible = false;
                 m_IsCursorMode = false;
                 Debug.Log("LCtrl: Locked");
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
-                //Cursor.visible = true;
                 m_IsCursorMode = true;
                 Debug.Log("LCtrl: Unlocked");
             }
@@ -195,9 +167,8 @@ public class Player : MonoBehaviour
     {
         if (m_IsCursorMode == false)
         {
-            //Vector3 _tmp = cameraTransform.localEulerAngles;
-            viewAngleTransform.Rotate(Vector3.up * mouseHorizontal * HorizontalMouseSpeed/*, Space.World*/);
-            cameraTransform.Rotate(Vector3.right * -mouseVertical * VerticalMouseSpeed/*, Space.Self*/);
+            viewAngleTransform.Rotate(Vector3.up * mouseHorizontal * HorizontalMouseSpeed);
+            cameraTransform.Rotate(Vector3.right * -mouseVertical * VerticalMouseSpeed);
             cameraTransform.localRotation = ClampRotation(cameraTransform.localRotation);
         }
     }
@@ -206,7 +177,6 @@ public class Player : MonoBehaviour
     {
         // Player Move
         Vector3 move = Vector3.zero;
-        //Debug.Log(cameraTransform.right);
         move += viewAngleTransform.right * inputHorizontal * HorizontalSpeed * 10;
         move += viewAngleTransform.forward * inputVertical * HorizontalSpeed * 10;
         move += Vector3.up * -inputLShift * VerticalSpeed * 10;
@@ -299,21 +269,21 @@ public class Player : MonoBehaviour
         if (cameraTransform.forward.y <= 0)  // Down
         {
             //Debug.Log("-");
-            if (Mathf.Approximately(m_Hit.point.y, pos.y) /*m_Hit.point.y == pos.y*/)
+            if (Mathf.Approximately(m_Hit.point.y, pos.y))
             {
                 pos.y -= 1;
             }
         }
         if (cameraTransform.forward.x <= 0)
         {
-            if (Mathf.Approximately(m_Hit.point.x, pos.x) /*m_Hit.point.x == pos.x*/)
+            if (Mathf.Approximately(m_Hit.point.x, pos.x))
             {
                 pos.x -= 1;
             }
         }
         if (cameraTransform.forward.z <= 0)
         {
-            if (Mathf.Approximately(m_Hit.point.z, pos.z) /*m_Hit.point.z == pos.z*/)
+            if (Mathf.Approximately(m_Hit.point.z, pos.z))
             {
                 pos.z -= 1;
             }
