@@ -69,4 +69,9 @@ public class ToolBar : MonoBehaviour
             }
         }
     }
+
+    public int GetBlockIdInFocus()
+    {
+        return ItemBoxes[NumberInFocus - 1].BlockID;
+    }
 }

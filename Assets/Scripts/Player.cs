@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     public float HorizontalMouseSpeed = 1.0f;
     public float VerticalMouseSpeed = 1.0f;
     public float MiningInterval = 0.3f;
+    public float PuttingInterval = 0.3f;
 
     public readonly int CHUNK_LAYER = 1 << 6;
 
@@ -35,6 +36,7 @@ public class Player : MonoBehaviour
     private bool m_IsCursorMode = false;
     private bool m_ExistLookingBlock = false;
     private float m_MiningInvervalCount = 0;
+    private float m_PuttingInvervalCount = 0;
 
     private Mouse m_Mouse;
     private Keyboard m_Keyboard;
@@ -122,7 +124,8 @@ public class Player : MonoBehaviour
 
         BlockHighlightProc();
 
-        MiningProc();
+        MineBlock();
+        PutBlock();
 
         // INFO
         Info.UpdateInfo("X, Y, Z", transform.position.x.ToString() + " / " + transform.position.y.ToString() + " / " + transform.position.z.ToString());
@@ -152,8 +155,7 @@ public class Player : MonoBehaviour
         inputSpace = m_Keyboard.spaceKey.isPressed ? 1 : 0;
         inputLCtrl = Input.GetKeyUp(KeyCode.LeftControl) ? 1 : 0;
         inputMouse0 = m_Mouse.leftButton.isPressed ? 1 : 0;
-        //Debug.Log(inputMouse0);
-        inputMouse1 = Input.GetKeyDown(KeyCode.Mouse1) ? 1 : 0;
+        inputMouse1 = m_Mouse.rightButton.isPressed ? 1 : 0;
 
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         toolBar.ShiftNumberInFocus(scroll);
@@ -347,13 +349,12 @@ public class Player : MonoBehaviour
         return pos;
     }
 
-    public void MiningProc()
+    public void MineBlock()
     {
         if (inputMouse0 == 1)
         {
             if (m_ExistLookingBlock && (m_MiningInvervalCount == 0 || m_MiningInvervalCount > MiningInterval))
             {
-                Debug.Log("put: " + getPosLookingAt().ToString());
                 world.PutBlock(0, getPosLookingAt());
                 m_MiningInvervalCount = 0;
             }
@@ -362,6 +363,24 @@ public class Player : MonoBehaviour
         else
         {
             m_MiningInvervalCount = 0;
+        }
+    }
+
+    private void PutBlock()
+    {
+        int blockID = toolBar.GetBlockIdInFocus();
+        if (inputMouse1 == 1 && blockID != 0)
+        {
+            if (m_ExistLookingBlock && (m_PuttingInvervalCount == 0 || m_PuttingInvervalCount > PuttingInterval))
+            {
+                world.PutBlock(blockID, getFrontPosLookingAt());
+                m_PuttingInvervalCount = 0;
+            }
+            m_PuttingInvervalCount += Time.deltaTime;
+        }
+        else
+        {
+            m_PuttingInvervalCount = 0;
         }
     }
 
