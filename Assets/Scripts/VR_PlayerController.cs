@@ -10,6 +10,7 @@ public class VR_PlayerController : MonoBehaviour
 
     private Transform cameraTransform;
     private Transform viewAngleTransform;
+    private Transform cameraRigTransform;
     private Ray m_Ray;
     private RaycastHit m_Hit;
     private GameObject m_BlockHighlight;
@@ -27,7 +28,10 @@ public class VR_PlayerController : MonoBehaviour
     void Start()
     {
         viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
-        cameraTransform = viewAngleTransform.Find("PlayerCamera").GetComponent<Transform>();
+        cameraTransform = viewAngleTransform.Find("OVRCameraRig").GetComponent<Transform>();
+
+        var cameraRig = viewAngleTransform.Find("OVRCameraRig").GetComponent<OVRCameraRig>();
+        cameraRigTransform = cameraRig.centerEyeAnchor;
 
         m_BlockHighlight = player.world.transform.Find("BlockHighlight").gameObject;
 
@@ -89,9 +93,9 @@ public class VR_PlayerController : MonoBehaviour
         }
 
         // 右コントローラーのスティック
-        Vector2 stick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
-        move += viewAngleTransform.right * stick.x * player.HorizontalSpeed;
-        move += viewAngleTransform.forward * stick.y * player.HorizontalSpeed;
+        Vector2 stick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
+        move += cameraRigTransform.right * stick.x * player.HorizontalSpeed;
+        move += cameraRigTransform.forward * stick.y * player.HorizontalSpeed;
 
         body.velocity = move;
         //MoveProc();
