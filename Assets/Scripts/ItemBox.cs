@@ -27,6 +27,6 @@ public class ItemBox : MonoBehaviour
 
         BlockIconObj = BlockIcon.CreateBlockIcon(blockID);
         BlockIconObj.transform.SetParent(transform);
-        BlockIconObj.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
+        BlockIconObj.GetComponent<RectTransform>().anchoredPosition3D = Vector3.zero;
     }
 }

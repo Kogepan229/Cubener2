@@ -56,7 +56,7 @@ public class VR_PlayerController : MonoBehaviour
             m_LookingAtChunkPos = null;
         }
 
-        BlockHighlightProc();
+        //BlockHighlightProc();
 
         MineBlock();
         PutBlock();
