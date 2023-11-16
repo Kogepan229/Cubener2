@@ -71,6 +71,14 @@ public class VR_PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 move = Vector3.zero;
+
+        // 右コントローラーのスティック
+        Vector2 stick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
+        move += cameraRigTransform.right * stick.x * player.HorizontalSpeed;
+        move += cameraRigTransform.forward * stick.y * player.HorizontalSpeed;
+
+        move.y = 0;
+
         if (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch))
         {
             // 右コントローラーのAボタンが押された時の処理
@@ -82,10 +90,7 @@ public class VR_PlayerController : MonoBehaviour
             move += Vector3.up * player.VerticalSpeed;
         }
 
-        // 右コントローラーのスティック
-        Vector2 stick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.LTouch);
-        move += cameraRigTransform.right * stick.x * player.HorizontalSpeed;
-        move += cameraRigTransform.forward * stick.y * player.HorizontalSpeed;
+        
 
         body.velocity = move;
     }
