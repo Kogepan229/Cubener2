@@ -523,8 +523,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameMode: 0
   Reach: 15
-  HorizontalSpeed: 6
-  VerticalSpeed: 6
+  HorizontalSpeed: 8
+  VerticalSpeed: 8
   MiningInterval: 0.2
   PuttingInterval: 0.2
   world: {fileID: 0}
@@ -6234,6 +6234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4742079996549976363}
+  - component: {fileID: 4742079996550298892}
   m_Layer: 0
   m_Name: TrackingSpace
   m_TagString: Untagged
@@ -6241,6 +6242,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4742079996550298892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4742079996550298891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 977e1cb4527604343b5a4d947adcd422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4742079996550337609
 GameObject:
   m_ObjectHideFlags: 0
