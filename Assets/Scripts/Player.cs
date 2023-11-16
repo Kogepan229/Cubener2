@@ -21,22 +21,11 @@ public class Player : MonoBehaviour
     public World world;
     public ToolBar toolBar;
 
-    private Transform cameraTransform;
-    private Transform viewAngleTransform;
-
-    //BoxCollider m_Collider;
-
     void Start()
     {
 
         world = transform.parent.GetComponent<World>();
         toolBar = GameObject.Find("ToolBar").GetComponent<ToolBar>();
-
-
-        viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
-        cameraTransform = viewAngleTransform.Find("PlayerCamera").GetComponent<Transform>();
-
-        //m_BlockHighlight = world.transform.Find("BlockHighlight").gameObject;
     }
 
     void Update()

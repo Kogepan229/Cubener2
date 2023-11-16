@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class VR_PlayerController : MonoBehaviour
 {
@@ -15,15 +14,12 @@ public class VR_PlayerController : MonoBehaviour
     private RaycastHit m_Hit;
     private GameObject m_BlockHighlight;
 
-    private bool m_IsCursorMode = false;
     private bool m_ExistLookingBlock = false;
     private float m_MiningInvervalCount = 0;
     private float m_PuttingInvervalCount = 0;
 
     private BlockPos? m_LookingAtChunkPos;
     private BlockPos? m_OldLookingAtChunkPos;
-
-    //BoxCollider m_Collider;
 
     void Start()
     {
@@ -34,10 +30,6 @@ public class VR_PlayerController : MonoBehaviour
         cameraRigTransform = cameraRig.centerEyeAnchor;
 
         m_BlockHighlight = player.world.transform.Find("BlockHighlight").gameObject;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = true;
-        m_IsCursorMode = false;
     }
 
     void Update()
