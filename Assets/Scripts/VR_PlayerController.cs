@@ -7,8 +7,7 @@ public class VR_PlayerController : MonoBehaviour
 
     public readonly int CHUNK_LAYER = 1 << 6;
 
-    private Transform cameraTransform;
-    private Transform viewAngleTransform;
+    [SerializeField] private Transform RightConrtollerTransform;
     private Transform cameraRigTransform;
     private Ray m_Ray;
     private RaycastHit m_Hit;
@@ -23,56 +22,55 @@ public class VR_PlayerController : MonoBehaviour
 
     void Start()
     {
-        viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
-        cameraTransform = viewAngleTransform.Find("OVRCameraRig").GetComponent<Transform>();
+        Transform viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
 
         var cameraRig = viewAngleTransform.Find("OVRCameraRig").GetComponent<OVRCameraRig>();
         cameraRigTransform = cameraRig.centerEyeAnchor;
 
-        m_BlockHighlight = player.world.transform.Find("BlockHighlight").gameObject;
+        m_BlockHighlight = transform.parent.GetComponent<World>().transform.Find("BlockHighlight").gameObject;
     }
 
     void Update()
     {
-        m_OldLookingAtChunkPos = m_LookingAtChunkPos;
-
-        //RoatateCameraProc();
-
-        // Look At
-        m_Ray.origin = cameraTransform.position;
-        m_Ray.direction = cameraTransform.forward;
-        m_ExistLookingBlock = Physics.Raycast(m_Ray, out m_Hit, player.Reach, CHUNK_LAYER);
-
-        if (m_ExistLookingBlock)
-        {
-            Info.UpdateInfo("Look At", m_Hit.point.x.ToString() + " / " + m_Hit.point.y.ToString() + " / " + m_Hit.point.z.ToString() + " (" + getPosLookingAt().ToString() + ")");
-            Info.UpdateInfo("Front Look At", getFrontPosLookingAt().ToString());
-            m_LookingAtChunkPos = getPosLookingAt();
-        }
-        else
-        {
-            Info.UpdateInfo("Look At", "None");
-            Info.UpdateInfo("Front Look At", "None");
-            m_LookingAtChunkPos = null;
-        }
-
-        //BlockHighlightProc();
-
-        MineBlock();
-        PutBlock();
-
-        // INFO
-        Info.UpdateInfo("X, Y, Z", transform.position.x.ToString() + " / " + transform.position.y.ToString() + " / " + transform.position.z.ToString());
-        Info.UpdateInfo("Rotation", cameraTransform.localEulerAngles.x.ToString() + " / " + viewAngleTransform.localEulerAngles.y.ToString() + " / " + cameraTransform.localEulerAngles.z.ToString());
-        Info.UpdateInfo("Direction", getPlayerLookingDirectionHorizontal().ToString());
-        Info.UpdateInfo("Chunk At", new ChunkPos(new BlockPos(transform.position)).ToString());
+        
     }
 
     void FixedUpdate()
     {
-        Vector3 move = Vector3.zero;
+        m_OldLookingAtChunkPos = m_LookingAtChunkPos;
+        // Look At
+        m_Ray.origin = RightConrtollerTransform.position;
+        m_Ray.direction = RightConrtollerTransform.forward;
+        m_ExistLookingBlock = Physics.Raycast(m_Ray, out m_Hit, player.Reach, CHUNK_LAYER);
+
+        if (m_ExistLookingBlock)
+        {
+            m_LookingAtChunkPos = getPosLookingAt();
+            Info.UpdateInfo("Look At", m_Hit.point.x.ToString() + " / " + m_Hit.point.y.ToString() + " / " + m_Hit.point.z.ToString() + " (" + m_LookingAtChunkPos.ToString() + ")");
+            Info.UpdateInfo("Front Look At", getFrontPosLookingAt().ToString());
+        }
+        else
+        {
+            m_LookingAtChunkPos = null;
+            Info.UpdateInfo("Look At", "None");
+            Info.UpdateInfo("Front Look At", "None");
+        }
+
+        BlockHighlightProc();
+
+        Info.UpdateInfo("Chunk At", new ChunkPos(new BlockPos(player.transform.position)).ToString());
+
 
         OVRInput.FixedUpdate();
+
+        Move();
+        MineBlock();
+        PutBlock();
+    }
+
+    private void Move()
+    {
+        Vector3 move = Vector3.zero;
         if (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.RTouch))
         {
             // 右コントローラーのAボタンが押された時の処理
@@ -90,7 +88,6 @@ public class VR_PlayerController : MonoBehaviour
         move += cameraRigTransform.forward * stick.y * player.HorizontalSpeed;
 
         body.velocity = move;
-        //MoveProc();
     }
 
     private void BlockHighlightProc()
@@ -129,38 +126,38 @@ public class VR_PlayerController : MonoBehaviour
         return q;
     }
 
-    World.EnumDirectionHorizontal getPlayerLookingDirectionHorizontal()
-    {
-        if (45f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 135f)
-        {
-            return World.EnumDirectionHorizontal.East;
-        }
-        else if (135f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 225f)
-        {
-            return World.EnumDirectionHorizontal.North;
-        }
-        else if (225f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 315f)
-        {
-            return World.EnumDirectionHorizontal.West;
-        }
-        else
-        {
-            return World.EnumDirectionHorizontal.South;
-        }
-    }
+    //World.EnumDirectionHorizontal getPlayerLookingDirectionHorizontal()
+    //{
+    //    if (45f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 135f)
+    //    {
+    //        return World.EnumDirectionHorizontal.East;
+    //    }
+    //    else if (135f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 225f)
+    //    {
+    //        return World.EnumDirectionHorizontal.North;
+    //    }
+    //    else if (225f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 315f)
+    //    {
+    //        return World.EnumDirectionHorizontal.West;
+    //    }
+    //    else
+    //    {
+    //        return World.EnumDirectionHorizontal.South;
+    //    }
+    //}
 
-    World.EnumDirectionVertical getPlayerLookingAtDirectionVertical()
-    {
-        Debug.Log(cameraTransform.localEulerAngles.x.ToString());
-        if (cameraTransform.localEulerAngles.x > 90)
-        {
-            return World.EnumDirectionVertical.Up;
-        }
-        else
-        {
-            return World.EnumDirectionVertical.Down;
-        }
-    }
+    //World.EnumDirectionVertical getPlayerLookingAtDirectionVertical()
+    //{
+    //    Debug.Log(cameraTransform.localEulerAngles.x.ToString());
+    //    if (cameraTransform.localEulerAngles.x > 90)
+    //    {
+    //        return World.EnumDirectionVertical.Up;
+    //    }
+    //    else
+    //    {
+    //        return World.EnumDirectionVertical.Down;
+    //    }
+    //}
 
     public BlockPos GetBlockPos()
     {
@@ -175,7 +172,7 @@ public class VR_PlayerController : MonoBehaviour
     BlockPos getPosLookingAt()
     {
         BlockPos pos = new BlockPos(m_Hit.point);
-        if (cameraTransform.forward.y <= 0)  // Down
+        if (RightConrtollerTransform.forward.y <= 0)  // Down
         {
             //Debug.Log("-");
             if (Mathf.Approximately(m_Hit.point.y, pos.y))
@@ -183,14 +180,14 @@ public class VR_PlayerController : MonoBehaviour
                 pos.y -= 1;
             }
         }
-        if (cameraTransform.forward.x <= 0)
+        if (RightConrtollerTransform.forward.x <= 0)
         {
             if (Mathf.Approximately(m_Hit.point.x, pos.x))
             {
                 pos.x -= 1;
             }
         }
-        if (cameraTransform.forward.z <= 0)
+        if (RightConrtollerTransform.forward.z <= 0)
         {
             if (Mathf.Approximately(m_Hit.point.z, pos.z))
             {
@@ -206,21 +203,21 @@ public class VR_PlayerController : MonoBehaviour
         BlockPos pos = new BlockPos(m_Hit.point);
         if (m_Hit.point.y == pos.y || m_Hit.point.y == pos.y + 1)
         {
-            if (cameraTransform.forward.y > 0)
+            if (RightConrtollerTransform.forward.y > 0)
             {
                 pos.y -= 1;
             }
         }
         if (m_Hit.point.x == pos.x || m_Hit.point.x == pos.x + 1)
         {
-            if (cameraTransform.forward.x > 0)
+            if (RightConrtollerTransform.forward.x > 0)
             {
                 pos.x -= 1;
             }
         }
         if (m_Hit.point.z == pos.z || m_Hit.point.z == pos.z + 1)
         {
-            if (cameraTransform.forward.z > 0)
+            if (RightConrtollerTransform.forward.z > 0)
             {
                 pos.z -= 1;
             }
@@ -228,11 +225,38 @@ public class VR_PlayerController : MonoBehaviour
         return pos;
     }
 
-    public void MineBlock()
+    private void MineBlock()
     {
+        if (OVRInput.Get(OVRInput.Axis1D.PrimaryHandTrigger, OVRInput.Controller.RTouch) > 0)
+        {
+            if (m_ExistLookingBlock && (m_MiningInvervalCount == 0 || m_MiningInvervalCount > player.MiningInterval))
+            {
+                player.world.PutBlock(0, getPosLookingAt());
+                m_MiningInvervalCount = 0;
+            }
+            m_MiningInvervalCount += Time.deltaTime;
+        }
+        else
+        {
+            m_MiningInvervalCount = 0;
+        }
     }
 
     private void PutBlock()
     {
+        int blockID = player.toolBar.GetBlockIdInFocus();
+        if (OVRInput.Get(OVRInput.Axis1D.PrimaryIndexTrigger, OVRInput.Controller.RTouch) > 0 && blockID != 0)
+        {
+            if (m_ExistLookingBlock && (m_PuttingInvervalCount == 0 || m_PuttingInvervalCount > player.PuttingInterval))
+            {
+                player.world.PutBlock(blockID, getFrontPosLookingAt());
+                m_PuttingInvervalCount = 0;
+            }
+            m_PuttingInvervalCount += Time.deltaTime;
+        }
+        else
+        {
+            m_PuttingInvervalCount = 0;
+        }
     }
 }

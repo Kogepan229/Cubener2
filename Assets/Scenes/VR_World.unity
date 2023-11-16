@@ -508,6 +508,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 348136547}
   body: {fileID: 348136544}
+  RightConrtollerTransform: {fileID: 4737978224263350445}
 --- !u!114 &348136547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,7 +522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   GameMode: 0
-  Reach: 5
+  Reach: 15
   HorizontalSpeed: 6
   VerticalSpeed: 6
   MiningInterval: 0.2

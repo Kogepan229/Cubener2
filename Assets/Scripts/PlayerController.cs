@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         viewAngleTransform = transform.Find("ViewAngle").GetComponent<Transform>();
         cameraTransform = viewAngleTransform.Find("PlayerCamera").GetComponent<Transform>();
 
-        m_BlockHighlight = player.world.transform.Find("BlockHighlight").gameObject;
+        m_BlockHighlight = transform.parent.GetComponent<World>().transform.Find("BlockHighlight").gameObject;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = true;
