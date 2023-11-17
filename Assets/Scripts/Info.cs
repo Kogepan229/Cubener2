@@ -28,6 +28,7 @@ public class Info : MonoBehaviour
         AddInfo("Direction");
         AddInfo("Front Look At");
         AddInfo("Chunk At");
+        AddInfo("Right Stick");
     }
 
     private void AddInfo(string key)

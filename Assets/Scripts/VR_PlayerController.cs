@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class VR_PlayerController : MonoBehaviour
@@ -19,6 +20,8 @@ public class VR_PlayerController : MonoBehaviour
 
     private BlockPos? m_LookingAtChunkPos;
     private BlockPos? m_OldLookingAtChunkPos;
+
+    private bool lockChangeToolBar = false;
 
     void Start()
     {
@@ -64,6 +67,7 @@ public class VR_PlayerController : MonoBehaviour
         OVRInput.FixedUpdate();
 
         Move();
+        ToolBarProcess();
         MineBlock();
         PutBlock();
     }
@@ -228,6 +232,29 @@ public class VR_PlayerController : MonoBehaviour
             }
         }
         return pos;
+    }
+
+    private void ToolBarProcess()
+    {
+        Vector2 stick = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick, OVRInput.Controller.RTouch);
+        Info.UpdateInfo("Right Stick", stick.ToString());
+        if (math.abs(stick.x) > 0.6f)
+        {
+            if (!lockChangeToolBar)
+            {
+                if (stick.x < 0)
+                {
+                    player.toolBar.ShiftNumberInFocus(1);
+                }else
+                {
+                    player.toolBar.ShiftNumberInFocus(-1);
+                }
+            }
+            lockChangeToolBar = true;
+        } else
+        {
+            lockChangeToolBar = false;
+        }
     }
 
     private void MineBlock()
