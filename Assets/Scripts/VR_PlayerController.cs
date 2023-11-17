@@ -264,6 +264,7 @@ public class VR_PlayerController : MonoBehaviour
             if (m_ExistLookingBlock && (m_MiningInvervalCount == 0 || m_MiningInvervalCount > player.MiningInterval))
             {
                 player.world.PutBlock(0, getPosLookingAt());
+                m_BlockHighlight.SetActive(false);
                 m_MiningInvervalCount = 0;
             }
             m_MiningInvervalCount += Time.deltaTime;
@@ -282,6 +283,7 @@ public class VR_PlayerController : MonoBehaviour
             if (m_ExistLookingBlock && (m_PuttingInvervalCount == 0 || m_PuttingInvervalCount > player.PuttingInterval))
             {
                 player.world.PutBlock(blockID, getFrontPosLookingAt());
+                m_BlockHighlight.SetActive(false);
                 m_PuttingInvervalCount = 0;
             }
             m_PuttingInvervalCount += Time.deltaTime;
