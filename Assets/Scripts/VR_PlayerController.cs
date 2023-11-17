@@ -116,68 +116,6 @@ public class VR_PlayerController : MonoBehaviour
         }
     }
 
-    // X軸の回転を±90度に制限
-    // 参考サイト https://www.popii33.com/unity-first-person-camera/
-    public Quaternion ClampRotation(Quaternion q)
-    {
-        //q = x,y,z,w (x,y,zはベクトル（量と向き）：wはスカラー（座標とは無関係の量）)
-        q.x /= q.w;
-        q.y /= q.w;
-        q.z /= q.w;
-        q.w = 1f;
-
-        float angleX = Mathf.Atan(q.x) * Mathf.Rad2Deg * 2f;
-
-        angleX = Mathf.Clamp(angleX, -90f, 90f);
-
-        q.x = Mathf.Tan(angleX * Mathf.Deg2Rad * 0.5f);
-
-        return q;
-    }
-
-    //World.EnumDirectionHorizontal getPlayerLookingDirectionHorizontal()
-    //{
-    //    if (45f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 135f)
-    //    {
-    //        return World.EnumDirectionHorizontal.East;
-    //    }
-    //    else if (135f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 225f)
-    //    {
-    //        return World.EnumDirectionHorizontal.North;
-    //    }
-    //    else if (225f <= viewAngleTransform.localEulerAngles.y && viewAngleTransform.localEulerAngles.y < 315f)
-    //    {
-    //        return World.EnumDirectionHorizontal.West;
-    //    }
-    //    else
-    //    {
-    //        return World.EnumDirectionHorizontal.South;
-    //    }
-    //}
-
-    //World.EnumDirectionVertical getPlayerLookingAtDirectionVertical()
-    //{
-    //    Debug.Log(cameraTransform.localEulerAngles.x.ToString());
-    //    if (cameraTransform.localEulerAngles.x > 90)
-    //    {
-    //        return World.EnumDirectionVertical.Up;
-    //    }
-    //    else
-    //    {
-    //        return World.EnumDirectionVertical.Down;
-    //    }
-    //}
-
-    public BlockPos GetBlockPos()
-    {
-        return new BlockPos(transform.position);
-    }
-
-    public ChunkPos GetChunkPos()
-    {
-        return new ChunkPos(GetBlockPos());
-    }
-
     BlockPos getPosLookingAt()
     {
         BlockPos pos = new BlockPos(m_Hit.point);
