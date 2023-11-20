@@ -28,6 +28,7 @@ public class Info : MonoBehaviour
         AddInfo("Direction");
         AddInfo("Front Look At");
         AddInfo("Chunk At");
+        AddInfo("Right Stick");
     }
 
     private void AddInfo(string key)
@@ -39,7 +40,7 @@ public class Info : MonoBehaviour
         objRect.anchorMin = Vector2.up;
         objRect.anchorMax = Vector2.up;
         objRect.pivot = Vector2.up;
-        objRect.anchoredPosition = new Vector2(2, positionY);
+        objRect.anchoredPosition3D = new Vector3(2, positionY, 0);
         positionY -= 18;
 
         Image image = objInfo.AddComponent<Image>();
@@ -53,7 +54,7 @@ public class Info : MonoBehaviour
         objTextRect.anchorMin = Vector2.up;
         objTextRect.anchorMax = Vector2.up;
         objTextRect.pivot = Vector2.up;
-        objTextRect.anchoredPosition = Vector2.zero;
+        objTextRect.anchoredPosition3D = Vector3.zero;
 
         TextMeshProUGUI text = objText.AddComponent<TextMeshProUGUI>();
         text.font = fontAsset;
