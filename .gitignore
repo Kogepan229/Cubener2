@@ -8,6 +8,8 @@ Library
 Assets/Fonts
 build_oculus
 
+Assets/Oculus
+Assets/Oculus.meta
 
 # User-specific files
 *.rsuser
